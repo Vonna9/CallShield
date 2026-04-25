@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "name": "CallShield",
+    "slug": "callshield",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "callshield",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.callshield.app"
+    },
+    "android": {
+      "package": "com.callshield.app"
+    },
+    "plugins": [],
+    "extra": {
+      "eas": {
+        "projectId": "c3c045fa-7df8-4729-97f7-1d6747fc5bf6"
+      }
+    }
+  }
+}
