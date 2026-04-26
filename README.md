@@ -14,6 +14,15 @@ CallShield was inspired by a growing global problem.
 In regions like Ukraine, demographic shifts have left many elderly people more vulnerable to scam calls. But this issue isn’t limited to one country—older adults everywhere are frequent targets of robocalls, phishing attempts, and fraud.
 For our team, this was also personal. One member has to constantly look out for their grandmother, who answers every call without hesitation. That experience helped drive the idea behind CallShield.
 
+
+## ☏   Key Features:
+1. Voicemail Analysis
+  * Evaluates missed calls and voicemails for potential threats.
+3. Simple, Accessible Design
+  * Built with elderly users in mind: clear, intuitive, and easy to naviage.
+4. Proactive Alerts
+  * Notifes users immediately when suspicious behavior is detected. 
+
 ## ☏   How it works:
 1. Incoming Call
 2. Transcription
