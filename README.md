@@ -32,6 +32,13 @@ For our team, this was also personal. One member has to constantly look out for 
 3. Risk Analysis
 4. Alert
 
+## ☏   Tools/References:
+Claude AI 
+Copilot AI
+Android Studio
+Flask API
+OpenAI Whisper API 
+FFMPEG 
 ## ☏   Who worked on this project?
 
 Made with 🤍 by Yvonna Mellado, Veronika Saiadian, Sofia Flores, & Melanie Perez
