@@ -5,7 +5,7 @@
 
 
 
-
+## 
    CallShield is an Android mobile app that detects scam and robocalls in real time, 
 before any damage is done. When a call comes in, CallShield transcribes the audio 
 using the Gemma 4 API and runs it through a custom-trained API that flags whether 
