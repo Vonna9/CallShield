@@ -22,4 +22,7 @@ For our team, this was also personal. One member has to constantly look out for 
 
 ## ☏   Who worked on this project?
 
+Yvonna Mellado, Veronika Saiadian, Sofia Flores, & Melanie Perez
+
+
 
