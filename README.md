@@ -8,3 +8,18 @@ the call is risky or safe.
 <div style="float: right;">
 <img width="300" height="262" alt="Gemini_Generated_Image_ioi1v1ioi1v1ioi1-removebg-preview" src="https://github.com/user-attachments/assets/47d051ac-fb51-482b-95b1-116a67d0e4ae" />
 </div>
+
+## ☏   Why we built it
+CallShield was inspired by a growing global problem.
+In regions like Ukraine, demographic shifts have left many elderly people more vulnerable to scam calls. But this issue isn’t limited to one country—older adults everywhere are frequent targets of robocalls, phishing attempts, and fraud.
+For our team, this was also personal. One member has to constantly look out for their grandmother, who answers every call without hesitation. That experience helped drive the idea behind CallShield.
+
+## ☏   How it works:
+1. Incoming Call
+2. Transcription
+3. Risk Analysis
+4. Alert
+
+## ☏   Who worked on this project?
+
+
