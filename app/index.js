@@ -4,47 +4,25 @@ import {
   TouchableOpacity,
   StyleSheet,
   Animated,
-  Easing,
   SafeAreaView,
   Alert,
+  ScrollView,
 } from 'react-native';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors, Spacing, Radius, FontSize } from '../constants/theme';
- 
+
 function PowerButton({ isOn, onPress }) {
-  const pulseAnim = useRef(new Animated.Value(1)).current;
   const scaleAnim = useRef(new Animated.Value(1)).current;
- 
-  useEffect(() => {
-    if (isOn) {
-      Animated.loop(
-        Animated.sequence([
-          Animated.timing(pulseAnim, {
-            toValue: 1.08,
-            duration: 1400,
-            easing: Easing.inOut(Easing.ease),
-            useNativeDriver: true,
-          }),
-          Animated.timing(pulseAnim, {
-            toValue: 1,
-            duration: 1400,
-            easing: Easing.inOut(Easing.ease),
-            useNativeDriver: true,
-          }),
-        ])
-      ).start();
-    }
-  }, [isOn]);
- 
+
   const handlePressIn = () => {
     Animated.spring(scaleAnim, {
       toValue: 0.94,
       useNativeDriver: true,
     }).start();
   };
- 
+
   const handlePressOut = () => {
     Animated.spring(scaleAnim, {
       toValue: 1,
@@ -52,10 +30,9 @@ function PowerButton({ isOn, onPress }) {
       useNativeDriver: true,
     }).start();
   };
- 
+
   const buttonColor = isOn ? Colors.deepTeal : '#1C2A28';
-  const ringColor = isOn ? Colors.midTeal : '#2A3E3A';
- 
+
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -63,19 +40,8 @@ function PowerButton({ isOn, onPress }) {
       onPressOut={handlePressOut}
       activeOpacity={1}
     >
-      <Animated.View style={{ transform: [{ scale: scaleAnim }], alignItems: 'center' }}>
-        <Animated.View
-          style={[
-            styles.pulseRing,
-            {
-              borderColor: ringColor,
-              transform: [{ scale: pulseAnim }],
-              opacity: isOn ? 0.35 : 0.15,
-            },
-          ]}
-        />
-        <View style={[styles.midRing, { borderColor: ringColor, opacity: isOn ? 0.6 : 0.2 }]} />
-        <View style={[styles.buttonBody, { backgroundColor: buttonColor, borderColor: ringColor }]}>
+      <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+        <View style={[styles.buttonBody, { backgroundColor: buttonColor }]}>
           <Ionicons
             name="power"
             size={50}
@@ -86,7 +52,7 @@ function PowerButton({ isOn, onPress }) {
     </TouchableOpacity>
   );
 }
- 
+
 function BackendBadge({ status }) {
   const color =
     status === 'connected'
@@ -100,28 +66,23 @@ function BackendBadge({ status }) {
       : status === 'checking'
       ? '◌ Checking backend…'
       : '○ Backend offline';
- 
+
   return (
     <View style={[styles.badge, { borderColor: color }]}>
       <Text style={[styles.badgeText, { color }]}>{label}</Text>
     </View>
   );
 }
- 
+
 export default function HomeScreen() {
   const [isOn, setIsOn] = useState(false);
   const [backendStatus, setBackendStatus] = useState('checking');
   const router = useRouter();
- 
+
   const BACKEND_URL = 'http://localhost:8000';
- 
-  useEffect(() => {
-    pingBackend();
-  }, []);
- 
+
   async function pingBackend() {
     try {
-      setBackendStatus('checking');
       const res = await fetch(`${BACKEND_URL}/ping`, { 
         signal: AbortSignal.timeout(4000) 
       });
@@ -134,48 +95,37 @@ export default function HomeScreen() {
       setBackendStatus('offline');
     }
   }
- 
+
   function handleToggle() {
     setIsOn(prev => !prev);
   }
- 
+
   return (
     <SafeAreaView style={styles.safe}>
-      <View style={styles.container}>
-        {/* Backend status badge */}
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        {/* Backend badge */}
         <BackendBadge status={backendStatus} />
- 
-        {/* Spacer */}
-        <View style={styles.spacer} />
- 
-        {/* Status text */}
-        <Text style={[styles.statusLabel, { color: isOn ? Colors.lightTeal : Colors.midGray }]}>
-          {isOn ? 'Protection active' : 'Protection off'}
-        </Text>
- 
-        {/* Control buttons row - Tutorial on left, Power on right */}
-        <View style={styles.buttonsRow}>
-          {/* Tutorial button */}
+
+        {/* Control section with light blue background */}
+        <View style={styles.controlSection}>
+          {/* Tutorial button - LEFT */}
           <TouchableOpacity
             style={styles.tutorialButton}
             onPress={() => Alert.alert('Tutorial', 'Coming soon — Coach marks will guide you through the app!')}
           >
             <Ionicons name="help-circle-outline" size={24} color={Colors.eucalyptus} />
-            <Text style={styles.tutorialButtonText}>Tutorial</Text>
+            <Text style={styles.tutorialText}>Tutorial</Text>
           </TouchableOpacity>
- 
-          {/* Power button */}
-          <View style={styles.powerButtonContainer}>
+
+          {/* Power button - RIGHT */}
+          <View style={styles.powerSection}>
             <PowerButton isOn={isOn} onPress={handleToggle} />
+            <Text style={styles.protectionStatus}>
+              {isOn ? 'Protection on' : 'Protection off'}
+            </Text>
           </View>
         </View>
- 
-        <Text style={styles.buttonHint}>
-          {isOn ? 'Tap to disable' : 'Tap to enable'}
-        </Text>
- 
-        <View style={styles.spacer} />
- 
+
         {/* Info card */}
         <View style={[styles.infoCard, { borderColor: isOn ? Colors.safeBorder : Colors.lightGray }]}>
           <Ionicons
@@ -189,42 +139,51 @@ export default function HomeScreen() {
               : 'Enable protection to start monitoring incoming calls.'}
           </Text>
         </View>
- 
-        {/* Navigation buttons */}
-        <View style={styles.navButtons}>
+
+        {/* Navigation Tabs */}
+        <View style={styles.tabsContainer}>
+          {/* App Permissions - Full width at top */}
           <TouchableOpacity 
-            style={styles.navButton}
-            onPress={() => router.push('/data')}
-          >
-            <Ionicons name="document-text-outline" size={20} color={Colors.eucalyptus} />
-            <Text style={styles.navButtonText}>Call History</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity 
-            style={styles.navButton}
+            style={styles.tabFull}
             onPress={() => router.push('/permissions')}
           >
             <Ionicons name="lock-closed-outline" size={20} color={Colors.eucalyptus} />
-            <Text style={styles.navButtonText}>Permissions</Text>
+            <Text style={styles.tabText}>App Permissions</Text>
+            <Ionicons name="chevron-forward" size={20} color={Colors.midGray} />
+          </TouchableOpacity>
+
+          {/* Accessibility and Data stacked below */}
+          <TouchableOpacity 
+            style={styles.tabStacked}
+            onPress={() => Alert.alert('Accessibility', 'Coming soon')}
+          >
+            <Ionicons name="accessibility-outline" size={20} color={Colors.eucalyptus} />
+            <Text style={styles.tabText}>Accessibility</Text>
+            <Ionicons name="chevron-forward" size={20} color={Colors.midGray} />
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={styles.tabStacked}
+            onPress={() => router.push('/data')}
+          >
+            <Ionicons name="document-text-outline" size={20} color={Colors.eucalyptus} />
+            <Text style={styles.tabText}>Call History</Text>
+            <Ionicons name="chevron-forward" size={20} color={Colors.midGray} />
           </TouchableOpacity>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
- 
-const BUTTON_SIZE = 120;
-const RING_1 = BUTTON_SIZE + 30;
-const RING_2 = BUTTON_SIZE + 60;
- 
+
+const BUTTON_SIZE = 100;
+
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
     backgroundColor: Colors.offWhite,
   },
-  container: {
-    flex: 1,
-    alignItems: 'center',
+  scrollContent: {
     paddingHorizontal: Spacing.lg,
     paddingTop: Spacing.lg,
     paddingBottom: Spacing.xl,
@@ -235,63 +194,49 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.xs,
     marginBottom: Spacing.lg,
+    alignSelf: 'flex-start',
   },
   badgeText: {
     fontSize: FontSize.xs,
     fontWeight: '500',
     letterSpacing: 0.3,
   },
-  spacer: {
-    flex: 1,
-  },
-  statusLabel: {
-    fontSize: FontSize.sm,
-    fontWeight: '500',
-    letterSpacing: 0.4,
-    marginBottom: Spacing.lg,
-  },
-  buttonsRow: {
+  controlSection: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'space-between',
-    width: '100%',
+    backgroundColor: '#A8D5E8',
+    borderRadius: Radius.lg,
+    padding: Spacing.lg,
     marginVertical: Spacing.lg,
-    paddingHorizontal: Spacing.md,
+    minHeight: 160,
   },
   tutorialButton: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'flex-start',
     gap: Spacing.sm,
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.sm,
+    backgroundColor: Colors.white,
+    borderRadius: Radius.md,
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.lg,
   },
-  tutorialButtonText: {
-    fontSize: FontSize.sm,
+  tutorialText: {
+    fontSize: FontSize.xs,
     color: Colors.eucalyptus,
-    fontWeight: '500',
+    fontWeight: '600',
   },
-  powerButtonContainer: {
+  powerSection: {
     alignItems: 'center',
-  },
-  pulseRing: {
-    position: 'absolute',
-    width: RING_2,
-    height: RING_2,
-    borderRadius: RING_2 / 2,
-    borderWidth: 3,
-  },
-  midRing: {
-    position: 'absolute',
-    width: RING_1,
-    height: RING_1,
-    borderRadius: RING_1 / 2,
-    borderWidth: 4,
+    justifyContent: 'flex-start',
+    gap: Spacing.md,
   },
   buttonBody: {
     width: BUTTON_SIZE,
     height: BUTTON_SIZE,
     borderRadius: BUTTON_SIZE / 2,
     borderWidth: 2,
+    borderColor: '#2A3E3A',
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: Colors.deepTeal,
@@ -300,11 +245,10 @@ const styles = StyleSheet.create({
     shadowRadius: 20,
     elevation: 12,
   },
-  buttonHint: {
-    marginTop: Spacing.sm,
+  protectionStatus: {
     fontSize: FontSize.xs,
     color: Colors.midGray,
-    letterSpacing: 0.3,
+    fontWeight: '600',
   },
   infoCard: {
     flexDirection: 'row',
@@ -314,34 +258,43 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: Radius.md,
     padding: Spacing.md,
-    width: '100%',
+    marginVertical: Spacing.lg,
   },
   infoText: {
     flex: 1,
     fontSize: FontSize.sm,
     lineHeight: 20,
   },
-  navButtons: {
-    flexDirection: 'row',
-    gap: Spacing.md,
-    marginTop: Spacing.lg,
-    width: '100%',
+  tabsContainer: {
+    gap: Spacing.sm,
+    marginTop: Spacing.xl,
   },
-  navButton: {
-    flex: 1,
+  tabFull: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.sm,
+    gap: Spacing.md,
     backgroundColor: Colors.white,
     borderWidth: 1,
     borderColor: Colors.lightGray,
     borderRadius: Radius.md,
     padding: Spacing.md,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
   },
-  navButtonText: {
+  tabStacked: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.md,
+    backgroundColor: Colors.white,
+    borderWidth: 1,
+    borderColor: Colors.lightGray,
+    borderRadius: Radius.md,
+    padding: Spacing.md,
+    justifyContent: 'space-between',
+  },
+  tabText: {
+    flex: 1,
     fontSize: FontSize.sm,
-    color: Colors.eucalyptus,
+    color: Colors.darkGray,
     fontWeight: '500',
   },
 });
