@@ -17,11 +17,11 @@ For our team, this was also personal. One member has to constantly look out for 
 
 ## ☏   Key Features:
 1. Voicemail Analysis
-  * Evaluates missed calls and voicemails for potential threats.
-3. Simple, Accessible Design
-  * Built with elderly users in mind: clear, intuitive, and easy to naviage.
-4. Proactive Alerts
-  * Notifes users immediately when suspicious behavior is detected. 
+    * Evaluates missed calls and voicemails for potential threats.
+2. Simple, Accessible Design
+    * Built with elderly users in mind: clear, intuitive, and easy to naviage.
+3. Proactive Alerts
+    * Notifes users immediately when suspicious behavior is detected. 
 
 ## ☏   How it works:
 1. Incoming Call
