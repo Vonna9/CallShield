@@ -33,9 +33,12 @@ For our team, this was also personal. One member has to constantly look out for 
 4. Alert
 
 ## ☏   Tools/References:
+**Small portions of code were referenced using AI tools and official documentation.**
 Claude AI 
 Copilot AI
+Hugging Face for datasets
 Android Studio
+React.js
 Flask API
 OpenAI Whisper API 
 FFMPEG 
