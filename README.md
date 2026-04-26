@@ -1,7 +1,8 @@
 # CallShield 
 ## ☏   Protects users from robot generated calls and common phone scams. 
 
-<img width="6912" height="3456" alt="CallShield protecting people who matter most" src="https://github.com/user-attachments/assets/f9656c75-ace5-4818-b08e-5f2f83dbc9e3" />
+<img width="6912" height="3456" alt="CallShield protecting people who matter most-2" src="https://github.com/user-attachments/assets/f01ce634-6e44-43c7-95f3-28c6293e6ecf" />
+
 
 
 
