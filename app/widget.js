@@ -9,18 +9,18 @@ import { useState, useRef } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors, Spacing, Radius, FontSize } from '../constants/theme';
 
-export default function SimpleWidget() {
+export default function RectangularWidget() {
   const [isOn, setIsOn] = useState(false);
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
-  const handlePressIn = () => {
+  const handlePowerPressIn = () => {
     Animated.spring(scaleAnim, {
       toValue: 0.92,
       useNativeDriver: true,
     }).start();
   };
 
-  const handlePressOut = () => {
+  const handlePowerPressOut = () => {
     Animated.spring(scaleAnim, {
       toValue: 1,
       friction: 4,
@@ -32,48 +32,77 @@ export default function SimpleWidget() {
     setIsOn(prev => !prev);
   }
 
+  function handleHomePress() {
+    // This would navigate to the main app
+    // You can use React Navigation or deep linking here
+  }
+
   const buttonColor = isOn ? Colors.midTeal : Colors.darkTeal;
 
   return (
-    <View style={styles.container}>
-      {/* Power button */}
+    <View style={styles.widgetBox}>
+      {/* Home button - top right */}
       <TouchableOpacity
-        onPress={handleToggle}
-        onPressIn={handlePressIn}
-        onPressOut={handlePressOut}
-        activeOpacity={1}
+        style={styles.homeButton}
+        onPress={handleHomePress}
       >
-        <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
-          <View style={[styles.powerButton, { backgroundColor: buttonColor }]}>
-            <Ionicons
-              name="power"
-              size={40}
-              color={Colors.white}
-            />
-          </View>
-        </Animated.View>
+        <Ionicons name="home" size={20} color={Colors.white} />
       </TouchableOpacity>
 
-      {/* App name */}
-      <Text style={styles.appName}>CallShield</Text>
+      {/* Center content */}
+      <View style={styles.content}>
+        {/* Power button */}
+        <TouchableOpacity
+          onPress={handleToggle}
+          onPressIn={handlePowerPressIn}
+          onPressOut={handlePowerPressOut}
+          activeOpacity={1}
+        >
+          <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+            <View style={[styles.powerButton, { backgroundColor: buttonColor }]}>
+              <Ionicons
+                name="power"
+                size={50}
+                color={Colors.white}
+              />
+            </View>
+          </Animated.View>
+        </TouchableOpacity>
+
+        {/* Status text */}
+        <Text style={[styles.statusText, { color: isOn ? Colors.midTeal : Colors.darkTeal }]}>
+          {isOn ? 'On' : 'Off'}
+        </Text>
+      </View>
     </View>
   );
 }
 
-const BUTTON_SIZE = 80;
+const BUTTON_SIZE = 110;
 
 const styles = StyleSheet.create({
-  container: {
+  widgetBox: {
+    backgroundColor: Colors.paleEuca,
+    borderRadius: Radius.xl,
+    padding: Spacing.lg,
     alignItems: 'center',
-    gap: Spacing.sm,
     justifyContent: 'center',
+    minHeight: 280,
+    position: 'relative',
+    shadowColor: Colors.midTeal,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.3,
+    shadowRadius: 16,
+    elevation: 10,
   },
-  powerButton: {
-    width: BUTTON_SIZE,
-    height: BUTTON_SIZE,
-    borderRadius: BUTTON_SIZE / 2,
-    borderWidth: 2,
-    borderColor: Colors.eucalyptus,
+  homeButton: {
+    position: 'absolute',
+    top: Spacing.lg,
+    right: Spacing.lg,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: Colors.midTeal,
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: Colors.midTeal,
@@ -82,10 +111,28 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 6,
   },
-  appName: {
-    fontSize: FontSize.sm,
+  content: {
+    alignItems: 'center',
+    gap: Spacing.xl,
+    justifyContent: 'center',
+  },
+  powerButton: {
+    width: BUTTON_SIZE,
+    height: BUTTON_SIZE,
+    borderRadius: BUTTON_SIZE / 2,
+    borderWidth: 3,
+    borderColor: Colors.eucalyptus,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: Colors.deepTeal,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.4,
+    shadowRadius: 16,
+    elevation: 10,
+  },
+  statusText: {
+    fontSize: FontSize.lg,
     fontWeight: '700',
-    color: Colors.deepTeal,
-    letterSpacing: 0.5,
+    letterSpacing: 1,
   },
 });
