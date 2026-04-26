@@ -5,9 +5,8 @@ before any damage is done. When a call comes in, CallShield transcribes the audi
 using the Gemma 4 API and runs it through a custom-trained API that flags whether 
 the call is risky or safe. 
 
-<div style="float: right;">
-<img width="300" height="262" alt="Gemini_Generated_Image_ioi1v1ioi1v1ioi1-removebg-preview" src="https://github.com/user-attachments/assets/47d051ac-fb51-482b-95b1-116a67d0e4ae" />
-</div>
+![Uploading 583825268-47d051ac-fb51-482b-95b1-116a67d0e4ae.png…]()
+
 
 ## ☏   Why we built it
 CallShield was inspired by a growing global problem.
